@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Base64;
 
 public class APIHttpClientHttpUrlConnection {
     static String bookingID;
@@ -137,6 +138,12 @@ public class APIHttpClientHttpUrlConnection {
             updatedPayload.put("bookingdates", innerList3);
             updatedPayload.put("additionalneeds", "Breakfast");
 
+            Log.info("Authentication by successfully updating the payload using PUT method of HTTP URL connection:");
+
+//          Fetching authentication token
+            String basicAuth = "Authentication Token : " + new String(Base64.getEncoder().encode(updatedPayload.toString().getBytes()));
+            Log.info(basicAuth);
+
             try (OutputStream os = conn.getOutputStream()) {
                 os.write(updatedPayload.toString().getBytes());
                 os.flush();
@@ -147,7 +154,6 @@ public class APIHttpClientHttpUrlConnection {
             }
             BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
             String output;
-            Log.info("Authentication by successfully updating the payload using PUT method of HTTP URL connection:");
             while ((output = br.readLine()) != null) {
                 Log.info(output);
             }
